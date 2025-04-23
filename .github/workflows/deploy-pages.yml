@@ -6,22 +6,22 @@ on:
       - main
 
 permissions:
-  contents: read      # ler seu código
-  pages: write        # publicar no Pages
-  id-token: write     # autenticação para deploy-pages
+  contents: read    # leitura do repo
+  pages: write      # gravação no Pages
+  id-token: write   # para autenticação
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      # 1) Puxa todo o repo
+      # 1) Checa o repo
       - uses: actions/checkout@v4
 
-      # 2) Envia TODO o conteúdo do repo como artefato para o Pages
-      - name: Upload pages artifact
+      # 2) Envia todo o conteúdo como "pages" artifact
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: .   # publica tudo que estiver na raíz
+          path: .    # publica TUDO da raiz
 
       # 3) Publica no GitHub Pages
       - name: Deploy to GitHub Pages
