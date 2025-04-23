@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invisible Letters & AI Text Mimicry</title>
+  <style>
+    body {
+      font-family: Georgia, serif;
+      line-height: 1.6;
+      margin: 2rem auto;
+      max-width: 800px;
+      padding: 0 1rem;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+    h1, h2, h3 {
+      color: #222;
+    }
+    code {
+      background: #eee;
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+    pre {
+      background: #eee;
+      padding: 1rem;
+      overflow-x: auto;
+      border-radius: 4px;
+    }
+    footer {
+      margin-top: 3rem;
+      font-style: italic;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <h1>Invisible Letters & AI Text Mimicry</h1>
+
+  <h2>Introduction: When text camouflages — digital mimicry with invisible letters</h2>
+  <p>In nature, <strong>mimicry</strong> is the ability of living beings to disguise themselves — like a butterfly that looks like a leaf, or a fish that blends into the ocean floor. The idea here is very similar: to create <strong>text that looks completely normal but hides invisible information</strong>, by replacing regular letters with special versions that blend in perfectly.</p>
+  <p>These “chameleon letters” are characters from the <strong>Unicode Private Use Area (PUA)</strong> — they have no defined meaning, and we can use a custom font to make them <em>look</em> like regular letters, even though they’re technically not. On screen, the text appears pristine, readable, and ordinary. But when someone copies and pastes it elsewhere, it <strong>reveals its true identity</strong>, showing that it was generated — or signed — by an intelligent system like an AI.</p>
+  <p>This is a form of <strong>modern steganography</strong>, elegant and effective, using nothing but plain text and clever font manipulation.</p>
+
+  <h2>Concept Summary: Text Steganography with Unicode + Dynamic Fonts</h2>
+
+  <h3>Goal</h3>
+  <p>To invisibly mark AI-generated (or otherwise authored) text by replacing standard letters with equivalent characters from the <strong>Unicode Private Use Area (PUA)</strong>. The display remains visually identical, but the text content is encoded, enabling traceability and disrupting clean copy-paste.</p>
+
+  <h3>Key Elements</h3>
+  <ul>
+    <li><strong>PUA (Private Use Area):</strong> Unicode ranges (e.g., <code>U+E000–U+F8FF</code>) reserved for custom use with no official meaning.</li>
+    <li><strong>Substitution of normal characters</strong> (like <code>a</code>, <code>e</code>, <code>g</code>) with PUA equivalents (e.g., <code>U+E001</code>, <code>U+E002</code>), using a <strong>custom font</strong> to preserve appearance.</li>
+    <li><strong>Dynamic font (TTF/WOFF2):</strong> Maps each PUA codepoint to its corresponding glyph (e.g., <code>U+E001</code> → "a"), ensuring seamless display.</li>
+    <li><strong>Hidden signature:</strong> The PUA sequence can encode metadata (model ID, timestamp, version, etc.).</li>
+    <li><strong>Copy-paste detection:</strong> Outside the proper environment, pasted text exposes its structure — with missing letters or strange symbols.</li>
+  </ul>
+
+  <h3>Advantages</h3>
+  <ul>
+    <li>Invisible to casual users;</li>
+    <li>Traceable by internal systems;</li>
+    <li>Simple to implement (no cryptography or ML required);</li>
+    <li>Useful for authorship authentication or anti-plagiarism.</li>
+  </ul>
+
+  <h3>Basic Implementation</h3>
+  <pre><code>mapping = {'a': '\uE001', 'e': '\uE002', 'g': '\uE003'}
+transformed = ''.join(mapping.get(c, c) for c in original_text)</code></pre>
+
+  <p><strong>Custom font creation</strong> (e.g., via FontForge):</p>
+  <ul>
+    <li>Map the glyph for “a” to <code>U+E001</code>, and so on.</li>
+    <li>Export as <code>.ttf</code> or <code>.woff2</code>.</li>
+  </ul>
+
+  <p><strong>Web or app usage:</strong></p>
+  <pre><code>@font-face {
+  font-family: 'StegaFont';
+  src: url('stegafont.woff2') format('woff2');
+}
+.marked {
+  font-family: 'StegaFont';
+}</code></pre>
+
+  <p><strong>Detection / reversal:</strong></p>
+  <ul>
+    <li>Create a script to detect and decode PUA characters.</li>
+    <li>Optionally validate embedded metadata.</li>
+  </ul>
+
+  <h3>Possible Extensions</h3>
+  <ul>
+    <li>Metadata encoding using character combinations;</li>
+    <li>Version tagging per AI model or session;</li>
+    <li>Integration with academic or legal auditing systems.</li>
+  </ul>
+
+  <h2>Conclusion: The invisible war of AIs — and the OCR apocalypse</h2>
+  <p>This method isn't just about plagiarism or authorship — it can also serve as a <strong>defensive strategy against automated scraping bots</strong>, making content harder to extract and reuse by other AIs.</p>
+  <p>It’s a form of “text privatization”: content is visible, but <strong>only readable correctly with the right key — the custom font</strong>.</p>
+  <p>Of course, this is an arms race. And in that race, <strong>OCR is the nuke</strong>: it bypasses encoding entirely and reads what's <em>seen</em> on the screen, as if it were just an image.</p>
+  <p>At this pace, we may soon face a future where <strong>entire web pages are written like a doctor’s prescription</strong> — full of grotesque glyphs, mangled scribbles, or CAPTCHA-like distortions, all designed to resist machine interpretation.</p>
+  <p>And in this digital jungle, only bots with eagle eyes — or medical handwriting experience — will survive.</p>
+
+  <footer>
+    <p><em>Written by Flavio D. Freire, a human with a head full of neurons,<br>
+    and ChatGPT-4o, a not-so-human with far more parameters than Flavio has neurons.</em></p>
+  </footer>
+</body>
+</html>
