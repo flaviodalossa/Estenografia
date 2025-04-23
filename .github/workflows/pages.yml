@@ -1,26 +1,22 @@
 name: Build & Deploy GitHub Pages
 
-# 1) dispara sempre que algo for empurrado ao main
 on:
   push:
     branches:
       - main
 
-# 2) permissões necessárias para ações de Pages
 permissions:
-  contents: read        # para ler seu repositório
-  pages: write          # para gravar no Pages
-  id-token: write       # exigido pelo deploy-pages
+  contents: read   # ler o repositório
+  pages: write     # gravar no Pages
+  id-token: write  # exigido pelo deploy-pages
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      # 2.1 – pega o código
       - uses: actions/checkout@v4
 
-      # 2.2 – roda o build Jekyll via Docker
-      - name: Build site with Jekyll (docker)
+      - name: Build site with Jekyll (Docker)
         run: |
           docker run \
             -v ${{ github.workspace }}:/srv/jekyll \
@@ -28,8 +24,7 @@ jobs:
             jekyll/builder:latest \
             /bin/bash -c "chmod -R 777 /srv/jekyll && jekyll build --future"
 
-      # 2.3 – empacota o resultado para deploy
-      - name: Upload artifact for Pages
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v1
         with:
           path: _site
@@ -38,6 +33,5 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      # 3 – faz o deploy no Pages
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v1
