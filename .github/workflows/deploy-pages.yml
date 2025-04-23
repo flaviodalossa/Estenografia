@@ -6,23 +6,21 @@ on:
       - main
 
 permissions:
-  contents: read    # leitura do repo
-  pages: write      # gravação no Pages
-  id-token: write   # para autenticação
+  contents: read    # ler o repo
+  pages: write      # gravar no Pages
+  id-token: write   # para autenticidade
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      # 1) Checa o repo
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      # 2) Envia todo o conteúdo como "pages" artifact
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: .    # publica TUDO da raiz
+          path: .     # publica todo o conteúdo da raiz
 
-      # 3) Publica no GitHub Pages
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v1
