@@ -6,21 +6,42 @@ on:
       - main
 
 permissions:
-  contents: read    # ler o repo
-  pages: write      # gravar no Pages
-  id-token: write   # para autenticidade
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
-  build-and-deploy:
+  # Build job continua o mesmo se você não precisar de um passo de build separado
+  # Se seu site for puramente HTML/CSS/JS estático sem precisar de build,
+  # você pode manter a estrutura de job único, mas precisa nomeá-lo 'build'
+  # para que o job 'deploy' (implícito ou explícito) funcione corretamente,
+  # ou ajustar o workflow para a estrutura recomendada com jobs separados.
+
+  # Estrutura mais simples (mantendo um job, mas nomeando corretamente):
+  build: # Renomeie o job para 'build' se usar a estrutura simples
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4 # v4 está atual
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5 # Adicione este passo se necessário
 
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v3 # Atualize para v3
         with:
-          path: .     # publica todo o conteúdo da raiz
+          # O path deve apontar para a pasta que contém seu site finalizado.
+          # Se seu index.html está na raiz e não há build, '.' está correto.
+          path: '.'
 
+  # Deploy job (necessário para a action deploy-pages)
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build # Precisa do job 'build' para obter o artefato
+    steps:
       - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v1
+        id: deployment
+        uses: actions/deploy-pages@v4 # Atualize para v4
