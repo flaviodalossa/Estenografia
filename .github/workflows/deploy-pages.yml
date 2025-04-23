@@ -1,0 +1,28 @@
+name: Deploy static site to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read      # ler seu código
+  pages: write        # publicar no Pages
+  id-token: write     # autenticação para deploy-pages
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # 1) Puxa todo o repo
+      - uses: actions/checkout@v4
+
+      # 2) Envia TODO o conteúdo do repo como artefato para o Pages
+      - name: Upload pages artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: .   # publica tudo que estiver na raíz
+
+      # 3) Publica no GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v1
